@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#12082b">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+<title>يوميات الزوكش</title>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="brand"><div class="avatar">ز</div><div><b>يوميات الزوكش</b><small id="welcome">مساعدك لحياة أهدى 💜</small></div></div>
+  <button class="topbtn" onclick="go('settings')">⚙</button>
+</header>
+
+<main>
+<!-- HOME -->
+<section id="home" class="page active">
+  <div class="hero">
+    <div class="heroText"><small id="heroDate">—</small><h1>صباح الخير يا زوكش ☀️</h1><p>يوم جديد، فرصة جديدة.</p></div>
+    <div class="crown">♛</div>
+  </div>
+  <div class="quote">“الانضباط بتاع النهارده هو راحتك بكرة.”</div>
+  <div class="dashboardGrid">
+    <div class="dash"><span class="ico cyan">✓</span><small>مهام اليوم</small><b id="homeTasks">0/0</b></div>
+    <div class="dash"><span class="ico pink">🔥</span><small>Streak العادات</small><b id="homeStreak">0 يوم</b></div>
+    <div class="dash"><span class="ico blue">💳</span><small>مصروف اليوم</small><b id="homeSpend">0 ج</b></div>
+    <div class="dash"><span class="ico gold">🎯</span><small>توفير الشهر</small><b id="homeSaved">0 ج</b></div>
+  </div>
+  <div class="card">
+    <div class="cardHead"><div><small>أحداث اليوم</small><h2>خطة النهارده</h2></div><button onclick="go('day')">عرض الكل</button></div>
+    <div id="homeTimeline"></div>
+  </div>
+  <div class="card">
+    <div class="cardHead"><div><small>الأهداف</small><h2>أنت بتقرب 🎯</h2></div><button onclick="go('money')">كل الأهداف</button></div>
+    <div id="homeGoals"></div>
+  </div>
+</section>
+
+<!-- ASSISTANT -->
+<section id="assistant" class="page">
+  <div class="pageTitle"><div class="titleIcon">AI</div><div><small>مساعدك الشخصي</small><h1>المساعد الذكي</h1></div></div>
+  <div class="aiIntro"><div class="bot">🤖</div><div><b>أنا معاك يا زوكش 👋</b><p>اكتب بشكل طبيعي وأنا أسجل وأرتب بياناتك محليًا بدون نت.</p></div></div>
+  <div class="suggests">
+    <button onclick="ask('سجل مصروف 50 مواصلات')">💸 سجل مصروف</button>
+    <button onclick="ask('اعمل عادة مذاكرة')">🔥 عادة</button>
+    <button onclick="ask('حط هدف 10000')">🎯 هدف</button>
+    <button onclick="ask('سجل قسط 2500 يوم 15')">📌 قسط</button>
+    <button onclick="ask('حلل فلوسي')">📊 تحليل</button>
+  </div>
+  <div id="chat" class="chat"></div>
+  <div class="composer"><input id="message" placeholder="اسألني أو اديني أمر..."><button onclick="send()">➤</button></div>
+  <div class="examples"><b>أمثلة:</b> “حوشت 500” • “أضف مهمة الجيم” • “مرتبي 8000” • “كام مصروفي الشهر ده؟”</div>
+</section>
+
+<!-- MONEY -->
+<section id="money" class="page">
+  <div class="pageTitle"><div class="titleIcon">▣</div><div><small>سيب الأرقام واضحة</small><h1>فلوسي</h1></div><button class="plus" onclick="addExpense()">＋</button></div>
+  <div class="moneyHero"><small>المتاح التقريبي</small><strong id="free">0 ج</strong><div><span>دخل <b id="income">0</b></span><span>مصروف <b id="monthSpend">0</b></span></div></div>
+  <div class="miniStats"><div>💰<small>التوفير</small><b id="saved">0 ج</b></div><div>📌<small>التزامات</small><b id="commitments">0 ج</b></div></div>
+  <div class="card">
+    <div class="cardHead"><div><small>مصروفات الشهر</small><h2>فلوسك راحت فين؟</h2></div><button onclick="addExpense()">+ مصروف</button></div>
+    <div class="barChart" id="chart"></div>
+    <div id="expenseRows"></div>
+  </div>
+  <div class="card"><div class="cardHead"><div><small>خططك</small><h2>أهداف التوفير</h2></div><button onclick="addGoal()">+ هدف</button></div><div id="goalRows"></div></div>
+  <div class="card"><div class="cardHead"><div><small>الأقساط</small><h2>الالتزامات</h2></div><button onclick="addInstallment()">+ قسط</button></div><div id="installmentRows"></div></div>
+  <div class="card"><div class="cardHead"><h2>الميزانية الشهرية</h2></div><div class="twoInputs"><input id="incomeInput" type="number" placeholder="الدخل"><input id="fixedInput" type="number" placeholder="الثابت"></div><button class="wide" onclick="saveFinance()">حفظ الميزانية</button></div>
+</section>
+
+<!-- DAY -->
+<section id="day" class="page">
+  <div class="pageTitle"><div class="titleIcon">▦</div><div><small>نظم وقتك</small><h1>يومي</h1></div><button class="plus" onclick="addTask()">＋</button></div>
+  <div class="calendar card"><div class="monthHead"><button onclick="changeMonth(-1)">‹</button><b id="monthTitle">—</b><button onclick="changeMonth(1)">›</button></div><div class="weekNames">أح&nbsp; إث&nbsp; ثل&nbsp; أر&nbsp; خم&nbsp; جم&nbsp; سب</div><div id="calendar"></div></div>
+  <div class="daySummary card"><div><b id="selectedDateLabel">اليوم</b><small id="dayPercent">0% إنجاز</small></div><div class="bigProgress"><i id="dayProgress"></i></div></div>
+  <div class="card"><div class="cardHead"><div><small>عاداتك</small><h2>Streaks 🔥</h2></div><button onclick="addHabit()">+ عادة</button></div><div id="habitRows"></div></div>
+  <div class="card"><div class="cardHead"><div><small>المهام</small><h2>To‑Do</h2></div><button onclick="addTask()">+ مهمة</button></div><div id="taskRows"></div></div>
+  <div class="card"><div class="cardHead"><div><small>تذكيرات</small><h2>مواعيدك</h2></div><button onclick="addReminder()">+ تذكير</button></div><div id="reminderRows"></div></div>
+</section>
+
+<!-- SETTINGS -->
+<section id="settings" class="page">
+  <div class="pageTitle"><div class="titleIcon">⚙</div><div><small>كل حاجة في إيدك</small><h1>الإعدادات</h1></div></div>
+  <div class="profile card"><div class="profileAvatar">ز</div><div><b>زوكش</b><small>مساعدك الشخصي 💜</small></div><button onclick="editName()">تعديل</button></div>
+  <div class="settings card">
+    <button onclick="backup()">💾 <span>تصدير نسخة احتياطية</span>›</button>
+    <button onclick="restore()">♻️ <span>استرجاع البيانات</span>›</button>
+    <button onclick="go('settings');focusSearch()">🔎 <span>البحث في كل البيانات</span>›</button>
+    <button onclick="toggleTheme()">🌙 <span>تبديل المظهر</span>›</button>
+    <button class="danger" onclick="clearAll()">🗑 <span>مسح كل البيانات</span>›</button>
+  </div>
+  <div class="card"><div class="cardHead"><div><small>بحث شامل</small><h2>دور في بياناتك</h2></div></div><input id="search" placeholder="مواصلات، مذاكرة، 2500..." oninput="searchAll()"><div id="results"></div></div>
+  <div class="about card"><div class="logoBig">ز</div><h2>يوميات الزوكش V6</h2><p>تطبيق Local‑first: بياناتك على جهازك، ويشتغل بدون إنترنت.</p><small>نسخة تجريبية ببيانات جاهزة للعرض.</small></div>
+</section>
+</main>
+
+<nav class="nav">
+  <button data-page="home" class="active" onclick="go('home')"><span>⌂</span><small>الرئيسية</small></button>
+  <button data-page="assistant" onclick="go('assistant')"><span>●</span><small>المساعد</small></button>
+  <button data-page="money" onclick="go('money')"><span>▣</span><small>فلوسي</small></button>
+  <button data-page="day" onclick="go('day')"><span>▦</span><small>يومي</small></button>
+  <button data-page="settings" onclick="go('settings')"><span>⚙</span><small>الإعدادات</small></button>
+</nav>
+
+<div id="modal" class="modal"><div class="modalBox"><div class="modalHead"><h2 id="modalTitle"></h2><button onclick="closeModal()">✕</button></div><div id="modalBody"></div></div></div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
